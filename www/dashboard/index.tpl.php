@@ -18,4 +18,11 @@
 	<?php  $this->dtgUsers->Render(); ?>
 </div>
 <?php } ?>
+<script "text/javascript">
+$(document).ready(function () {
+	  $(".nav li").removeClass("active");//this will remove the active class from  
+	                                     //previously active menu item 
+	  $('#dashboard').addClass('active');
+	});
+</script>
 <?php require(__INCLUDES__ . '/footer.inc.php'); ?>

@@ -7,9 +7,9 @@ class UserWidget extends QDialogBox {
 	public $txtUsername;
 	public $txtPassword;
 	public $lstAccessLevel;
+	public $lstPartner;
 	public $btnSubmit;
 	public $btnCancel;
-	public $lblDebug;
 	
 	// Object Variables
     protected $strCloseCallback;  
@@ -24,11 +24,7 @@ class UserWidget extends QDialogBox {
      public function __construct($strCloseCallback, $objParentObject, $strControlId = null) {
             parent::__construct($objParentObject, $strControlId);
             $this->strCloseCallback = $strCloseCallback;
-            
-            $this->lblDebug = new QLabel($this);
-            $this->lblDebug->HtmlEntities = false;
-            
-            $this->lblDebug->Text = 'Debugging...';
+
             $this->txtFirstName = new QTextBox($this);
             $this->txtFirstName->Name = 'First Name';
             $this->txtFirstName->Required = true;
@@ -51,9 +47,14 @@ class UserWidget extends QDialogBox {
 			
 			$this->lstAccessLevel = new QListBox($this);
 			$arrAccessLevels = AccessLevel::LoadAll();
+			$this->lstAccessLevel->AddAction(new QChangeEvent(), new QAjaxControlAction($this, 'lstAccessLevel_Change'));
 			foreach($arrAccessLevels as $objLevel)
 				$this->lstAccessLevel->AddItem($objLevel->Value, $objLevel->Id);
-			
+						
+			$this->lstPartner = new QListBox($this);
+			$this->lstPartner->HtmlBefore = 'Select Partner Organization this user is associated with:';
+			$this->lstPartner->AddItem('-Select-', 0);
+						
 			$this->btnSubmit = new QButton($this);
 			$this->btnSubmit->Text = 'Submit';
 			$this->btnSubmit->CausesValidation = true;
@@ -63,11 +64,29 @@ class UserWidget extends QDialogBox {
 			$this->btnCancel = new QButton($this);
             $this->btnCancel->Text = 'Cancel';
             $this->btnCancel->CssClass = 'btn btn-primary';
-            $this->btnCancel->AddAction(new QClickEvent(), new QAjaxControlAction($this, 'btnCancel_Click'));
-            
-            $this->lblDebug->Text .= 'userId passed = '.$this->iUserId;
-            $this->lblDebug->Text .= '<br>bCreateUser = '.$this->bCreateUser;
-            
+            $this->btnCancel->AddAction(new QClickEvent(), new QAjaxControlAction($this, 'btnCancel_Click'));            
+     }
+     
+     public function lstAccessLevel_Change() {
+     	switch($this->lstAccessLevel->SelectedValue) {
+     		case 1: // charity
+     			$this->lstPartner->Display = true;
+     			$this->lstPartner->RemoveAllItems();
+     			$arrCharities = CharityPartner::LoadAll();
+     			foreach($arrCharities as $objCharity)
+					$this->lstPartner->AddItem($objCharity->Name, $objCharity->Id);
+     			break;
+     		case 2: // fashion
+     			$this->lstPartner->Display = true;
+     			$this->lstPartner->RemoveAllItems();
+     			$arrFashion = FashionPartner::LoadAll();
+     			foreach($arrFashion as $objFashion)
+					$this->lstPartner->AddItem($objFashion->Name, $objFashion->Id);
+     			break;
+     		case 3: // Administrator - not applicable
+     			$this->lstPartner->Display = false;
+     			break;
+     	}
      }
      
 	public function btnCancel_Click() {
@@ -84,6 +103,13 @@ class UserWidget extends QDialogBox {
 		$objUser->Username = $this->txtUsername->Text;
 		$objUser->Password = $this->txtPassword->Text;
 		$objUser->AccessLevel = $this->lstAccessLevel->SelectedValue;
+		if($this->lstAccessLevel->SelectedValue == 1) {
+			$objCharityPartner = CharityPartner::LoadById($this->lstPartner->SelectedValue);
+			$objUser->AssociateCharityPartnerAsCharity($objCharityPartner);
+		}else if ($this->lstAccessLevel->SelectedValue == 2) {
+			$objFashionPartner = FashionPartner::LoadById($this->lstPartner->SelectedValue);
+			$objUser->AssociateFashionPartnerAsFashion($objFashionPartner);
+		}
 		$objUser->Save();
    	} else {
    		$this->objUser->FirstName = $this->txtFirstName->Text;
@@ -92,6 +118,15 @@ class UserWidget extends QDialogBox {
         $this->objUser->Username = $this->txtUsername->Text;
         $this->objUser->Password = $this->txtPassword->Text;
         $this->objUser->AccessLevel = $this->lstAccessLevel->SelectedValue;
+   		if($this->lstAccessLevel->SelectedValue == 1) {
+			$objCharityPartner = CharityPartner::LoadById($this->lstPartner->SelectedValue);
+			$objUser->UnassociateAllCharityPartnersAsCharity();
+			$objUser->AssociateCharityPartnerAsCharity($objCharityPartner);
+		}else if ($this->lstAccessLevel->SelectedValue == 2) {
+			$objFashionPartner = FashionPartner::LoadById($this->lstPartner->SelectedValue);
+			$objUser->UnassociateAllFashionPartnersAsFashion();
+			$objUser->AssociateFashionPartnerAsFashion($objFashionPartner);
+		}
         $this->objUser->Save();
    	}
    	call_user_func(array($this->objForm, $this->strCloseCallback));
@@ -109,6 +144,7 @@ class UserWidget extends QDialogBox {
    			$this->txtUsername->Text = $this->objUser->Username;
    			$this->txtPassword->Text = $this->objUser->Password;
    			$this->lstAccessLevel->SelectedValue = $this->objUser->AccessLevel;
+   			$this->lstAccessLevel_Change();
    		}
    	} else {
    		$this->objUser = null;

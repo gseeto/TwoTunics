@@ -33,8 +33,8 @@
 	      <a class="navbar-brand" href="#">TwoTunics</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>	    
-	      <li><a href="#">My Needs</a></li>
+	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>	    
+	      <li id="needs"><a href="#">My Needs</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/logoff/index.php"><span class="glyphicon glyphicon-log-in"></span> LogOff</a></li>
@@ -51,8 +51,8 @@
 	      <a class="navbar-brand" href="#">TwoTunics</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
-	      <li><a href="#">My Donations</a></li>
+	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
+	      <li id="donations"><a href="#">My Donations</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/logoff/index.php"><span class="glyphicon glyphicon-log-in"></span> LogOff</a></li>
@@ -69,11 +69,11 @@
 	      <a class="navbar-brand" href="#">TwoTunics</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
-	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/users/index.php">Users</a></li>
-	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/partners/index.php">Partners</a></li>
-	      <li><a href="#">Needs</a></li>
-	      <li><a href="#">Donations</a></li>
+	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
+	      <li id="users" ><a href="<?php _p(__SUBDIRECTORY__);?>/users/index.php">Users</a></li>
+	      <li id="partners"><a href="<?php _p(__SUBDIRECTORY__);?>/partners/index.php">Partners</a></li>
+	      <li id="needs"><a href="#">Needs</a></li>
+	      <li id="donations"><a href="#">Donations</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/logoff/index.php"><span class="glyphicon glyphicon-log-in"></span> LogOff</a></li>

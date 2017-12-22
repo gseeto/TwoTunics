@@ -9,7 +9,7 @@
 	// To use, simply rename or copy this file to includes/configuration.inc.php, and begin making modifications
 	// to the configuration constants as it makes sense for your PHP and docroot installation.
 
-	define('SERVER_INSTANCE', 'dev');
+	define('SERVER_INSTANCE', 'prod');
 
 	switch (SERVER_INSTANCE) {
 		case 'dev':
@@ -34,6 +34,18 @@
 			break;
 
 		case 'prod':
+			define ('__DOCROOT__', '/var/www');
+			define ('__VIRTUAL_DIRECTORY__', '');
+			define ('__SUBDIRECTORY__', '/html');
+
+			define('DB_CONNECTION_1', serialize(array(
+				'adapter' => 'MySqli5',
+				'server' => 'localhost',
+				'port' => null,
+				'database' => 'twotunics',
+				'username' => 'root',
+				'password' => '2Tunics!@#',
+				'profiling' => false)));
 			break;
 	}
 

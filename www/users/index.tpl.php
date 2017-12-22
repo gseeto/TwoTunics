@@ -12,4 +12,11 @@
 <?php } else { ?>
 <div class="text-danger">You do not have permissions to view this page.</div>
 <?php  }?>
+<script "text/javascript">
+$(document).ready(function () {
+	  $(".nav li").removeClass("active");//this will remove the active class from  
+	                                     //previously active menu item 
+	  $('#users').addClass('active');
+	});
+</script>
 <?php require(__INCLUDES__ . '/footer.inc.php'); ?>
