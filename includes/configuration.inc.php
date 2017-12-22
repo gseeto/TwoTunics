@@ -36,7 +36,7 @@
 		case 'prod':
 			define ('__DOCROOT__', '/var/www');
 			define ('__VIRTUAL_DIRECTORY__', '');
-			define ('__SUBDIRECTORY__', '/html');
+			define ('__SUBDIRECTORY__', '');
 
 			define('DB_CONNECTION_1', serialize(array(
 				'adapter' => 'MySqli5',

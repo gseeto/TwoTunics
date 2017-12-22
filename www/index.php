@@ -91,7 +91,7 @@ class LoginForm extends TwoTunicsForm {
 		if (array_key_exists('r', $_GET) && $_GET['r'])
 		QApplication::Redirect($_GET['r']);
 		else
-		QApplication::Redirect('/www/dashboard/');
+		QApplication::Redirect('/dashboard/');
 
 	}
 }
