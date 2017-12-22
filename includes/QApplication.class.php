@@ -145,7 +145,7 @@
 			unset($_SESSION['intUserId']);
 			QApplication::$User = null;
 			QApplication::$UserId = null;
-			QApplication::Redirect('/www/index.php');
+			QApplication::Redirect('/index.php');
 		}
 	}
 ?>
