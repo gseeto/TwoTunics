@@ -17,7 +17,7 @@ class DashboardForm extends TwoTunicsForm {
 			
 		$this->dtgNeeds = new NeedDataGrid($this);
 		$this->dtgNeeds->AddColumn(new QDataGridColumn('Description', '<?= $_ITEM->Description ?>', 'HtmlEntities=false' ));
-		$this->dtgNeeds->AddColumn(new QDataGridColumn('Requested By', '<?= $_FORM->Charity_Render($_ITEM)', 'HtmlEntities=false' ));			
+		$this->dtgNeeds->AddColumn(new QDataGridColumn('Requested By', '<?= $_FORM->Charity_Render($_ITEM) ?>', 'HtmlEntities=false' ));			
 		$this->dtgNeeds->AddColumn(new QDataGridColumn('Type', '<?= $_FORM->Need_Type_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgNeeds->AddColumn(new QDataGridColumn('Size', '<?= $_FORM->Need_Size_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgNeeds->AddColumn(new QDataGridColumn('Quantity Requested', '<?= $_ITEM->QuantityRequested ?>','HtmlEntities=false'));
@@ -77,16 +77,22 @@ class DashboardForm extends TwoTunicsForm {
 	}
 	
 	public function Charity_Render(Need $objNeed) {
-        return $objNeed->Charity->Name;
+        if($objNeed->Charity)
+        	return $objNeed->Charity->Name;
+        else return 'Administrator Entered';
     }
     
 	public function Need_Type_Render(Need $objNeed) {
-		return UnitGenre::ToString($objNeed->UnitGenreId);
+		$objUnitGenre = UnitGenre::Load($objNeed->UnitGenreId);
+		if($objUnitGenre) return $objUnitGenre->Name .'/'. $objUnitGenre->Category;
+		else return 'Unknown';
     }
     	
     
 	public function Need_Size_Render(Need $objNeed) {
-		return ($objNeed->Size->Value);
+		$objSize = Size::Load($objNeed->Size);
+		if($objSize) return ($objSize->Value);
+		else return 'Unknown';
     }  
     
 	public function dtgDonations_Bind() {

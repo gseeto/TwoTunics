@@ -4,16 +4,18 @@
 
 
 <div class="table-responsive">
-	<?php  $this->dtgDonations->Render(); ?>
+	<?php  $this->dtgNeeds->Render(); ?>
 </div>
-<?php $this->dlgDonationWidget->Render(); ?>
-<p><?php $this->btnAddDonation->Render('CssClass=btn btn-primary'); ?></p>
+<?php $this->dlgNeedsWidget->Render(); ?>
+<?php $this->dlgFulfillWidget->Render(); ?>
+
+<p><?php $this->btnAddNeeds->Render('CssClass=btn btn-primary'); ?></p>
 
 <script "text/javascript">
 $(document).ready(function () {
 	  $(".nav li").removeClass("active");//this will remove the active class from  
 	                                     //previously active menu item 
-	  $('#donations').addClass('active');
+	  $('#needs').addClass('active');
 	});
 </script>
 <?php require(__INCLUDES__ . '/footer.inc.php'); ?>

@@ -34,7 +34,7 @@
 	    </div>
 	    <ul class="nav navbar-nav">
 	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>	    
-	      <li id="needs"><a href="#">My Needs</a></li>
+	      <li id="needs"><a href="<?php _p(__SUBDIRECTORY__);?>/needs/index.php">My Needs</a></li>
 	      <li id="donations"><a href="<?php _p(__SUBDIRECTORY__);?>/donations/index.php">Available Donations</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
@@ -73,7 +73,7 @@
 	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
 	      <li id="users" ><a href="<?php _p(__SUBDIRECTORY__);?>/users/index.php">Users</a></li>
 	      <li id="partners"><a href="<?php _p(__SUBDIRECTORY__);?>/partners/index.php">Partners</a></li>
-	      <li id="needs"><a href="#">Needs</a></li>
+	      <li id="needs"><a href="<?php _p(__SUBDIRECTORY__);?>/needs/index.php">Needs</a></li>
 	      <li id="donations"><a href="<?php _p(__SUBDIRECTORY__);?>/donations/index.php">Donations</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">

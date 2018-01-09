@@ -1,9 +1,8 @@
 <?php
-class DonationWidget extends QDialogBox {
+class NeedsWidget extends QDialogBox {
 	// Public child controls
 	public $txtDescription;
-	public $txtQuantityGiven;
-	public $txtCostPerUnit;	
+	public $txtQuantityRequested;
 	public $lstUnitGenre;
 	public $lstSize;
 	public $btnSubmit;
@@ -11,14 +10,14 @@ class DonationWidget extends QDialogBox {
 	
 	// Object Variables
     protected $strCloseCallback;  
-    protected $bCreateDonation; 
-    protected $iDonationId;
-    protected $iFashionPartnerId;
-    protected $objDonation;
+    protected $bCreateNeed; 
+    protected $iNeedId;
+    protected $iCharityPartnerId;
+    protected $objNeed;
         
     // Default Overrides
     protected $blnMatteClickable = false;
-    protected $strTemplate = 'DonationWidget.tpl.php';
+    protected $strTemplate = 'NeedsWidget.tpl.php';
 	
      public function __construct($strCloseCallback, $objParentObject, $strControlId = null) {
             parent::__construct($objParentObject, $strControlId);
@@ -28,13 +27,10 @@ class DonationWidget extends QDialogBox {
             $this->txtDescription->Name = 'Description';
             $this->txtDescription->Required = true;
             
-            $this->txtQuantityGiven = new QTextBox($this);
-            $this->txtQuantityGiven->Name = 'Quantity Given';
-            $this->txtQuantityGiven->Required = true;
-            
-            $this->txtCostPerUnit = new QTextBox($this);
-            $this->txtCostPerUnit->Name = 'Cost Per Unit';
-            			
+            $this->txtQuantityRequested = new QTextBox($this);
+            $this->txtQuantityRequested->Name = 'Quantity Requested';
+            $this->txtQuantityRequested->Required = true;
+                        			
 			$this->lstUnitGenre = new QListBox($this);
 			$arrUnitGenre = UnitGenre::LoadAll();
 			$this->lstUnitGenre->AddAction(new QChangeEvent(), new QAjaxControlAction($this, 'lstUnitGenre_Change'));
@@ -74,26 +70,23 @@ class DonationWidget extends QDialogBox {
         
    public function btnSubmit_Click() {
    	// If Create is set then create user, else update.
-   	if($this->bCreateDonation){
-   		$objDonation = new Donation();
-   		$objDonation->Description = $this->txtDescription->Text;
-		$objDonation->QuantityGiven = $this->txtQuantityGiven->Text;
-		$objDonation->CostPerUnit = $this->txtCostPerUnit->Text;
-		$objDonation->UnitGenreId = $this->lstUnitGenre->SelectedValue;	
-		$objDonation->SizeId = $this->lstSize->SelectedValue;	
-		$objDonation->QuantityRemaining = $this->txtQuantityGiven->Text; // At Creation this should be the same
-		$objDonation->Status = 1; // Available		
-		$objFashionPartner = FashionPartner::Load($this->iFashionPartnerId);
-		if($objFashionPartner) $objDonation->FashionPartnerId = $this->iFashionPartnerId;
-		$objDonation->DateDonated = QDateTime::Now();
-		$objDonation->Save();		
+   	if($this->bCreateNeed){
+   		$objNeed = new Need();
+   		$objNeed->Description = $this->txtDescription->Text;
+		$objNeed->QuantityRequested = $this->txtQuantityRequested->Text;
+		$objNeed->UnitGenreId = $this->lstUnitGenre->SelectedValue;	
+		$objNeed->Size = $this->lstSize->SelectedValue;	
+		$objNeed->QuantityStillRequired = $this->txtQuantityRequested->Text; // At Creation this should be the same
+		$objCharityPartner = CharityPartner::LoadById($this->iCharityPartnerId);
+		if($objCharityPartner) $objNeed->CharityId = $this->iCharityPartnerId;
+		$objNeed->DateRequested = QDateTime::Now();
+		$objNeed->Save();		
    	} else {
-   		$this->objDonation->Description = $this->txtDescription->Text;
-        $this->objDonation->QuantityGiven = $this->txtQuantityGiven->Text;
-        $this->objDonation->CostPerUnit = $this->txtCostPerUnit->Text;
-        $this->objDonation->UnitGenreId = $this->lstUnitGenre->SelectedValue;  	
-        $this->objDonation->SizeId = $this->lstSize->SelectedValue;	
-        $this->objDonation->Save();
+   		$this->objNeed->Description = $this->txtDescription->Text;
+        $this->objNeed->QuantityRequested = $this->txtQuantityRequested->Text;
+        $this->objNeed->UnitGenreId = $this->lstUnitGenre->SelectedValue;  	
+        $this->objNeed->Size = $this->lstSize->SelectedValue;	
+        $this->objNeed->Save();
    	}
    	call_user_func(array($this->objForm, $this->strCloseCallback));
     $this->HideDialogBox();
@@ -101,20 +94,18 @@ class DonationWidget extends QDialogBox {
 
    public function ShowDialogBox() {
    	parent::ShowDialogBox(); 
-   	if($this->bCreateDonation) {
+   	if($this->bCreateNeed) {
    		$this->txtDescription->Text = '';
-   		$this->txtQuantityGiven->Text = 0;
-   		$this->txtCostPerUnit->Text = 0; 		
+   		$this->txtQuantityRequested->Text = 0;		
    	} else {
-	   	if($this->iDonationId != 0) {
-	   		$this->objDonation = Donation::LoadById($this->iDonationId);
-	   		if($this->objDonation != null) {
-	   			$this->txtDescription->Text = $this->objDonation->Description;
-	   			$this->txtQuantityGiven->Text = $this->objDonation->QuantityGiven;
-	   			$this->txtCostPerUnit->Text = $this->objDonation->CostPerUnit;
-	   			$this->lstUnitGenre->SelectedValue = $this->objDonation->UnitGenreId;
+	   	if($this->iNeedId != 0) {
+	   		$this->objNeed = Need::LoadById($this->iNeedId);
+	   		if($this->objNeed != null) {
+	   			$this->txtDescription->Text = $this->objNeed->Description;
+	   			$this->txtQuantityRequested->Text = $this->objNeed->QuantityRequested;
+	   			$this->lstUnitGenre->SelectedValue = $this->objNeed->UnitGenreId;
 	   			$this->lstUnitGenre_Change();
-	   			$this->lstSize->SelectedValue = $this->objDonation->SizeId;
+	   			$this->lstSize->SelectedValue = $this->objNeed->Size;
 	   			
 	   		}
 	   	}  
@@ -126,11 +117,11 @@ class DonationWidget extends QDialogBox {
     */
 	public function __get($strName) {
             switch ($strName) {
-                case "IsCreate": return $this->bCreateDonation;
+                case "IsCreate": return $this->bCreateNeed;
 					break;
-                case "DonationId": return $this->iDonationId;
+                case "NeedId": return $this->iNeedId;
                 	break;
-                case "FashionPartnerId": return $this->iFashionPartnerId;
+                case "CharityPartnerId": return $this->iCharityPartnerId;
                 default:
                     try {
                         return parent::__get($strName);
@@ -149,25 +140,25 @@ class DonationWidget extends QDialogBox {
 
             switch ($strName) {
                 case "IsCreate":
-            		$this->bCreateDonation = false;
+            		$this->bCreateNeed = false;
                     try {                    
-                        $this->bCreateDonation = QType::Cast($mixValue, QType::Boolean);
+                        $this->bCreateNeed = QType::Cast($mixValue, QType::Boolean);
                         break;
                     } catch (QInvalidCastException $objExc) {}                  
                      break;
 
-                case "DonationId":
-                	$this->iDonationId = 0;
+                case "NeedId":
+                	$this->iNeedId = 0;
                 	try {                    
-                        $this->iDonationId = QType::Cast($mixValue, QType::Integer);
+                        $this->iNeedId = QType::Cast($mixValue, QType::Integer);
                         break;
                     } catch (QInvalidCastException $objExc) {}                  
                      break;
                      
-                case "FashionPartnerId":
-                	$this->iFashionPartnerId = 0;
+                case "CharityPartnerId":
+                	$this->iCharityPartnerId = 0;
                 	try {                    
-                        $this->iFashionPartnerId = QType::Cast($mixValue, QType::Integer);
+                        $this->iCharityPartnerId = QType::Cast($mixValue, QType::Integer);
                         break;
                     } catch (QInvalidCastException $objExc) {}                  
                      break;
