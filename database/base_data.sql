@@ -152,10 +152,10 @@ INSERT INTO `size` (`id`, `value`, `category`) VALUES
 (107, '14', 'Men''s/Women''s');
 
 --
--- Dumping data for table `unit_type`
+-- Dumping data for table `unit_genre`
 --
 
-INSERT INTO `unit_type` (`id`, `name`, `category`) VALUES
+INSERT INTO `unit_genre` (`id`, `name`, `category`) VALUES
 (1, 'Male Clothing', 'Infant & Toddler Sizes'),
 (2, 'Male Clothing', 'Boy''s Sizes'),
 (3, 'Male Clothing', 'Men''s Sizes'),

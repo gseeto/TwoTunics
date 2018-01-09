@@ -89,8 +89,8 @@ class UsersForm extends TwoTunicsForm {
     	
     	$fashionArray = FashionPartner::LoadArrayByUserAsFashion($objUser->Id);
     	if(!empty($fashionArray)) return 'Fashion Partner';
-    	
-    	return 'Administrator';
+    	if($objUser->AccessLevel == 3) return 'Administrator';
+    	else return 'Unknown';
     	
     }
     

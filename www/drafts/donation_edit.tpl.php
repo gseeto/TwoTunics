@@ -23,7 +23,7 @@
 
 		<?php $this->txtQuantityGiven->RenderWithName(); ?>
 
-		<?php $this->lstUnitType->RenderWithName(); ?>
+		<?php $this->lstUnitGenre->RenderWithName(); ?>
 
 		<?php $this->lstSize->RenderWithName(); ?>
 

@@ -11,7 +11,7 @@
 
 		<?php $_CONTROL->txtQuantityGiven->RenderWithName(); ?>
 
-		<?php $_CONTROL->lstUnitType->RenderWithName(); ?>
+		<?php $_CONTROL->lstUnitGenre->RenderWithName(); ?>
 
 		<?php $_CONTROL->lstSize->RenderWithName(); ?>
 

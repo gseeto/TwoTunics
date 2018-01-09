@@ -120,12 +120,12 @@ class UserWidget extends QDialogBox {
         $this->objUser->AccessLevel = $this->lstAccessLevel->SelectedValue;
    		if($this->lstAccessLevel->SelectedValue == 1) {
 			$objCharityPartner = CharityPartner::LoadById($this->lstPartner->SelectedValue);
-			$objUser->UnassociateAllCharityPartnersAsCharity();
-			$objUser->AssociateCharityPartnerAsCharity($objCharityPartner);
+			$this->objUser->UnassociateAllCharityPartnersAsCharity();
+			$this->objUser->AssociateCharityPartnerAsCharity($objCharityPartner);
 		}else if ($this->lstAccessLevel->SelectedValue == 2) {
 			$objFashionPartner = FashionPartner::LoadById($this->lstPartner->SelectedValue);
-			$objUser->UnassociateAllFashionPartnersAsFashion();
-			$objUser->AssociateFashionPartnerAsFashion($objFashionPartner);
+			$this->objUser->UnassociateAllFashionPartnersAsFashion();
+			$this->objUser->AssociateFashionPartnerAsFashion($objFashionPartner);
 		}
         $this->objUser->Save();
    	}

@@ -58,7 +58,7 @@
 			$this->dtgDonations->MetaAddColumn('Id');
 			$this->dtgDonations->MetaAddColumn('Description');
 			$this->dtgDonations->MetaAddColumn('QuantityGiven');
-			$this->dtgDonations->MetaAddTypeColumn('UnitTypeId', 'UnitType');
+			$this->dtgDonations->MetaAddColumn(QQN::Donation()->UnitGenre);
 			$this->dtgDonations->MetaAddColumn(QQN::Donation()->Size);
 			$this->dtgDonations->MetaAddColumn(QQN::Donation()->StatusObject);
 			$this->dtgDonations->MetaAddColumn('CostPerUnit');

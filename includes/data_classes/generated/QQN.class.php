@@ -49,6 +49,12 @@
 			return new QQNodeTransaction('transaction', null, null);
 		}
 		/**
+		 * @return QQNodeUnitGenre
+		 */
+		static public function UnitGenre() {
+			return new QQNodeUnitGenre('unit_genre', null, null);
+		}
+		/**
 		 * @return QQNodeUser
 		 */
 		static public function User() {

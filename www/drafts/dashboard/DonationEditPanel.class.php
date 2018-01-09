@@ -23,7 +23,7 @@
 		public $lblId;
 		public $txtDescription;
 		public $txtQuantityGiven;
-		public $lstUnitType;
+		public $lstUnitGenre;
 		public $lstSize;
 		public $lstStatusObject;
 		public $txtCostPerUnit;
@@ -62,7 +62,7 @@
 			$this->lblId = $this->mctDonation->lblId_Create();
 			$this->txtDescription = $this->mctDonation->txtDescription_Create();
 			$this->txtQuantityGiven = $this->mctDonation->txtQuantityGiven_Create();
-			$this->lstUnitType = $this->mctDonation->lstUnitType_Create();
+			$this->lstUnitGenre = $this->mctDonation->lstUnitGenre_Create();
 			$this->lstSize = $this->mctDonation->lstSize_Create();
 			$this->lstStatusObject = $this->mctDonation->lstStatusObject_Create();
 			$this->txtCostPerUnit = $this->mctDonation->txtCostPerUnit_Create();

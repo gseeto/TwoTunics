@@ -30,7 +30,7 @@ class DashboardForm extends TwoTunicsForm {
 		
 		$this->dtgDonations = new DonationDataGrid($this);
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Description', '<?= $_ITEM->Description ?>', 'HtmlEntities=false' ));
-		$this->dtgDonations->AddColumn(new QDataGridColumn('Donated By', '<?= $_FORM->Fashion_Partner_Render($_ITEM)', 'HtmlEntities=false' ));			
+		$this->dtgDonations->AddColumn(new QDataGridColumn('Donated By', '<?= $_FORM->Fashion_Partner_Render($_ITEM) ?>', 'HtmlEntities=false' ));			
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Type', '<?= $_FORM->Donation_Type_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Size', '<?= $_FORM->Donation_Size_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Quantity Donated', '<?= $_ITEM->QuantityGiven ?>','HtmlEntities=false'));
@@ -81,7 +81,7 @@ class DashboardForm extends TwoTunicsForm {
     }
     
 	public function Need_Type_Render(Need $objNeed) {
-		return UnitType::ToString($objNeed->UnitTypeId);
+		return UnitGenre::ToString($objNeed->UnitGenreId);
     }
     	
     
@@ -113,11 +113,19 @@ class DashboardForm extends TwoTunicsForm {
 	}
 	
 	public function Fashion_Partner_Render(Donation $objDonation) {
-        return $objDonation->FashionPartner->Name;
+		if($objDonation->FashionPartner)
+        	return $objDonation->FashionPartner->Name;
+        else return 'Administrator Entered';
     }
     
 	public function Donation_Type_Render(Donation $objDonation) {
-		return UnitType::ToString($objDonation->UnitTypeId);
+		$objUnitGenre = UnitGenre::Load($objDonation->UnitGenreId);
+		if($objUnitGenre) return $objUnitGenre->Name .'/'. $objUnitGenre->Category;
+		else return 'Unknown';
+    }
+    
+    public function Donation_Size_Render(Donation $objDonation) {
+    	return $objDonation->Size->Value;
     }
     
 	public function Size_Render(Donation $objDonation) {

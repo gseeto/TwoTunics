@@ -9,13 +9,13 @@
 	// To use, simply rename or copy this file to includes/configuration.inc.php, and begin making modifications
 	// to the configuration constants as it makes sense for your PHP and docroot installation.
 
-	define('SERVER_INSTANCE', 'prod');
+	define('SERVER_INSTANCE', 'dev');
 
 	switch (SERVER_INSTANCE) {
 		case 'dev':
-			define ('__DOCROOT__', '/var/www');
+			define ('__DOCROOT__', '/var/www/www');
 			define ('__VIRTUAL_DIRECTORY__', '');
-			define ('__SUBDIRECTORY__', '/www');
+			define ('__SUBDIRECTORY__', '');
 
 			define('DB_CONNECTION_1', serialize(array(
 				'adapter' => 'MySqli5',

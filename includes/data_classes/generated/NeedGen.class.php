@@ -18,11 +18,12 @@
 	 * @property integer $Id the value for intId (Read-Only PK)
 	 * @property string $Description the value for strDescription 
 	 * @property integer $QuantityRequested the value for intQuantityRequested 
-	 * @property integer $UnitTypeId the value for intUnitTypeId 
+	 * @property integer $UnitGenreId the value for intUnitGenreId 
 	 * @property integer $Size the value for intSize 
 	 * @property QDateTime $DateRequested the value for dttDateRequested 
 	 * @property integer $CharityId the value for intCharityId 
 	 * @property integer $QuantityStillRequired the value for intQuantityStillRequired 
+	 * @property UnitGenre $UnitGenre the value for the UnitGenre object referenced by intUnitGenreId 
 	 * @property CharityPartner $Charity the value for the CharityPartner object referenced by intCharityId 
 	 * @property Transaction $_Transaction the value for the private _objTransaction (Read-Only) if set due to an expansion on the transaction.need_id reverse relationship
 	 * @property Transaction[] $_TransactionArray the value for the private _objTransactionArray (Read-Only) if set due to an ExpandAsArray on the transaction.need_id reverse relationship
@@ -60,11 +61,11 @@
 
 
 		/**
-		 * Protected member variable that maps to the database column need.unit_type_id
-		 * @var integer intUnitTypeId
+		 * Protected member variable that maps to the database column need.unit_genre_id
+		 * @var integer intUnitGenreId
 		 */
-		protected $intUnitTypeId;
-		const UnitTypeIdDefault = null;
+		protected $intUnitGenreId;
+		const UnitGenreIdDefault = null;
 
 
 		/**
@@ -136,6 +137,16 @@
 		///////////////////////////////
 		// PROTECTED MEMBER OBJECTS
 		///////////////////////////////
+
+		/**
+		 * Protected member variable that contains the object pointed by the reference
+		 * in the database column need.unit_genre_id.
+		 *
+		 * NOTE: Always use the UnitGenre property getter to correctly retrieve this UnitGenre object.
+		 * (Because this class implements late binding, this variable reference MAY be null.)
+		 * @var UnitGenre objUnitGenre
+		 */
+		protected $objUnitGenre;
 
 		/**
 		 * Protected member variable that contains the object pointed by the reference
@@ -460,7 +471,7 @@
 			$objBuilder->AddSelectItem($strTableName, 'id', $strAliasPrefix . 'id');
 			$objBuilder->AddSelectItem($strTableName, 'description', $strAliasPrefix . 'description');
 			$objBuilder->AddSelectItem($strTableName, 'quantity_requested', $strAliasPrefix . 'quantity_requested');
-			$objBuilder->AddSelectItem($strTableName, 'unit_type_id', $strAliasPrefix . 'unit_type_id');
+			$objBuilder->AddSelectItem($strTableName, 'unit_genre_id', $strAliasPrefix . 'unit_genre_id');
 			$objBuilder->AddSelectItem($strTableName, 'size', $strAliasPrefix . 'size');
 			$objBuilder->AddSelectItem($strTableName, 'date_requested', $strAliasPrefix . 'date_requested');
 			$objBuilder->AddSelectItem($strTableName, 'charity_id', $strAliasPrefix . 'charity_id');
@@ -534,8 +545,8 @@
 			$objToReturn->strDescription = $objDbRow->GetColumn($strAliasName, 'VarChar');
 			$strAliasName = array_key_exists($strAliasPrefix . 'quantity_requested', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'quantity_requested'] : $strAliasPrefix . 'quantity_requested';
 			$objToReturn->intQuantityRequested = $objDbRow->GetColumn($strAliasName, 'Integer');
-			$strAliasName = array_key_exists($strAliasPrefix . 'unit_type_id', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'unit_type_id'] : $strAliasPrefix . 'unit_type_id';
-			$objToReturn->intUnitTypeId = $objDbRow->GetColumn($strAliasName, 'Integer');
+			$strAliasName = array_key_exists($strAliasPrefix . 'unit_genre_id', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'unit_genre_id'] : $strAliasPrefix . 'unit_genre_id';
+			$objToReturn->intUnitGenreId = $objDbRow->GetColumn($strAliasName, 'Integer');
 			$strAliasName = array_key_exists($strAliasPrefix . 'size', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'size'] : $strAliasPrefix . 'size';
 			$objToReturn->intSize = $objDbRow->GetColumn($strAliasName, 'Integer');
 			$strAliasName = array_key_exists($strAliasPrefix . 'date_requested', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'date_requested'] : $strAliasPrefix . 'date_requested';
@@ -556,6 +567,12 @@
 			// Prepare to Check for Early/Virtual Binding
 			if (!$strAliasPrefix)
 				$strAliasPrefix = 'need__';
+
+			// Check for UnitGenre Early Binding
+			$strAlias = $strAliasPrefix . 'unit_genre_id__id';
+			$strAliasName = array_key_exists($strAlias, $strColumnAliasArray) ? $strColumnAliasArray[$strAlias] : $strAlias;
+			if (!is_null($objDbRow->GetColumn($strAliasName)))
+				$objToReturn->objUnitGenre = UnitGenre::InstantiateDbRow($objDbRow, $strAliasPrefix . 'unit_genre_id__', $strExpandAsArrayNodes, null, $strColumnAliasArray);
 
 			// Check for Charity Early Binding
 			$strAlias = $strAliasPrefix . 'charity_id__id';
@@ -662,16 +679,16 @@
 			
 		/**
 		 * Load an array of Need objects,
-		 * by UnitTypeId Index(es)
-		 * @param integer $intUnitTypeId
+		 * by UnitGenreId Index(es)
+		 * @param integer $intUnitGenreId
 		 * @param QQClause[] $objOptionalClauses additional optional QQClause objects for this query
 		 * @return Need[]
 		*/
-		public static function LoadArrayByUnitTypeId($intUnitTypeId, $objOptionalClauses = null) {
-			// Call Need::QueryArray to perform the LoadArrayByUnitTypeId query
+		public static function LoadArrayByUnitGenreId($intUnitGenreId, $objOptionalClauses = null) {
+			// Call Need::QueryArray to perform the LoadArrayByUnitGenreId query
 			try {
 				return Need::QueryArray(
-					QQ::Equal(QQN::Need()->UnitTypeId, $intUnitTypeId),
+					QQ::Equal(QQN::Need()->UnitGenreId, $intUnitGenreId),
 					$objOptionalClauses
 					);
 			} catch (QCallerException $objExc) {
@@ -682,14 +699,14 @@
 
 		/**
 		 * Count Needs
-		 * by UnitTypeId Index(es)
-		 * @param integer $intUnitTypeId
+		 * by UnitGenreId Index(es)
+		 * @param integer $intUnitGenreId
 		 * @return int
 		*/
-		public static function CountByUnitTypeId($intUnitTypeId, $objOptionalClauses = null) {
-			// Call Need::QueryCount to perform the CountByUnitTypeId query
+		public static function CountByUnitGenreId($intUnitGenreId, $objOptionalClauses = null) {
+			// Call Need::QueryCount to perform the CountByUnitGenreId query
 			return Need::QueryCount(
-				QQ::Equal(QQN::Need()->UnitTypeId, $intUnitTypeId)
+				QQ::Equal(QQN::Need()->UnitGenreId, $intUnitGenreId)
 			, $objOptionalClauses
 			);
 		}
@@ -760,7 +777,7 @@
 						INSERT INTO `need` (
 							`description`,
 							`quantity_requested`,
-							`unit_type_id`,
+							`unit_genre_id`,
 							`size`,
 							`date_requested`,
 							`charity_id`,
@@ -768,7 +785,7 @@
 						) VALUES (
 							' . $objDatabase->SqlVariable($this->strDescription) . ',
 							' . $objDatabase->SqlVariable($this->intQuantityRequested) . ',
-							' . $objDatabase->SqlVariable($this->intUnitTypeId) . ',
+							' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 							' . $objDatabase->SqlVariable($this->intSize) . ',
 							' . $objDatabase->SqlVariable($this->dttDateRequested) . ',
 							' . $objDatabase->SqlVariable($this->intCharityId) . ',
@@ -794,7 +811,7 @@
 						SET
 							`description` = ' . $objDatabase->SqlVariable($this->strDescription) . ',
 							`quantity_requested` = ' . $objDatabase->SqlVariable($this->intQuantityRequested) . ',
-							`unit_type_id` = ' . $objDatabase->SqlVariable($this->intUnitTypeId) . ',
+							`unit_genre_id` = ' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 							`size` = ' . $objDatabase->SqlVariable($this->intSize) . ',
 							`date_requested` = ' . $objDatabase->SqlVariable($this->dttDateRequested) . ',
 							`charity_id` = ' . $objDatabase->SqlVariable($this->intCharityId) . ',
@@ -885,7 +902,7 @@
 			// Update $this's local variables to match
 			$this->strDescription = $objReloaded->strDescription;
 			$this->intQuantityRequested = $objReloaded->intQuantityRequested;
-			$this->UnitTypeId = $objReloaded->UnitTypeId;
+			$this->UnitGenreId = $objReloaded->UnitGenreId;
 			$this->intSize = $objReloaded->intSize;
 			$this->dttDateRequested = $objReloaded->dttDateRequested;
 			$this->CharityId = $objReloaded->CharityId;
@@ -905,7 +922,7 @@
 					`id`,
 					`description`,
 					`quantity_requested`,
-					`unit_type_id`,
+					`unit_genre_id`,
 					`size`,
 					`date_requested`,
 					`charity_id`,
@@ -917,7 +934,7 @@
 					' . $objDatabase->SqlVariable($this->intId) . ',
 					' . $objDatabase->SqlVariable($this->strDescription) . ',
 					' . $objDatabase->SqlVariable($this->intQuantityRequested) . ',
-					' . $objDatabase->SqlVariable($this->intUnitTypeId) . ',
+					' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 					' . $objDatabase->SqlVariable($this->intSize) . ',
 					' . $objDatabase->SqlVariable($this->dttDateRequested) . ',
 					' . $objDatabase->SqlVariable($this->intCharityId) . ',
@@ -987,10 +1004,10 @@
 					// @return integer
 					return $this->intQuantityRequested;
 
-				case 'UnitTypeId':
-					// Gets the value for intUnitTypeId 
+				case 'UnitGenreId':
+					// Gets the value for intUnitGenreId 
 					// @return integer
-					return $this->intUnitTypeId;
+					return $this->intUnitGenreId;
 
 				case 'Size':
 					// Gets the value for intSize 
@@ -1016,6 +1033,18 @@
 				///////////////////
 				// Member Objects
 				///////////////////
+				case 'UnitGenre':
+					// Gets the value for the UnitGenre object referenced by intUnitGenreId 
+					// @return UnitGenre
+					try {
+						if ((!$this->objUnitGenre) && (!is_null($this->intUnitGenreId)))
+							$this->objUnitGenre = UnitGenre::Load($this->intUnitGenreId);
+						return $this->objUnitGenre;
+					} catch (QCallerException $objExc) {
+						$objExc->IncrementOffset();
+						throw $objExc;
+					}
+
 				case 'Charity':
 					// Gets the value for the CharityPartner object referenced by intCharityId 
 					// @return CharityPartner
@@ -1095,12 +1124,13 @@
 						throw $objExc;
 					}
 
-				case 'UnitTypeId':
-					// Sets the value for intUnitTypeId 
+				case 'UnitGenreId':
+					// Sets the value for intUnitGenreId 
 					// @param integer $mixValue
 					// @return integer
 					try {
-						return ($this->intUnitTypeId = QType::Cast($mixValue, QType::Integer));
+						$this->objUnitGenre = null;
+						return ($this->intUnitGenreId = QType::Cast($mixValue, QType::Integer));
 					} catch (QCallerException $objExc) {
 						$objExc->IncrementOffset();
 						throw $objExc;
@@ -1155,6 +1185,36 @@
 				///////////////////
 				// Member Objects
 				///////////////////
+				case 'UnitGenre':
+					// Sets the value for the UnitGenre object referenced by intUnitGenreId 
+					// @param UnitGenre $mixValue
+					// @return UnitGenre
+					if (is_null($mixValue)) {
+						$this->intUnitGenreId = null;
+						$this->objUnitGenre = null;
+						return null;
+					} else {
+						// Make sure $mixValue actually is a UnitGenre object
+						try {
+							$mixValue = QType::Cast($mixValue, 'UnitGenre');
+						} catch (QInvalidCastException $objExc) {
+							$objExc->IncrementOffset();
+							throw $objExc;
+						} 
+
+						// Make sure $mixValue is a SAVED UnitGenre object
+						if (is_null($mixValue->Id))
+							throw new QCallerException('Unable to set an unsaved UnitGenre for this Need');
+
+						// Update Local Member Variables
+						$this->objUnitGenre = $mixValue;
+						$this->intUnitGenreId = $mixValue->Id;
+
+						// Return $mixValue
+						return $mixValue;
+					}
+					break;
+
 				case 'Charity':
 					// Sets the value for the CharityPartner object referenced by intCharityId 
 					// @param CharityPartner $mixValue
@@ -1407,7 +1467,7 @@
 			$strToReturn .= '<element name="Id" type="xsd:int"/>';
 			$strToReturn .= '<element name="Description" type="xsd:string"/>';
 			$strToReturn .= '<element name="QuantityRequested" type="xsd:int"/>';
-			$strToReturn .= '<element name="UnitTypeId" type="xsd:int"/>';
+			$strToReturn .= '<element name="UnitGenre" type="xsd1:UnitGenre"/>';
 			$strToReturn .= '<element name="Size" type="xsd:int"/>';
 			$strToReturn .= '<element name="DateRequested" type="xsd:dateTime"/>';
 			$strToReturn .= '<element name="Charity" type="xsd1:CharityPartner"/>';
@@ -1420,6 +1480,7 @@
 		public static function AlterSoapComplexTypeArray(&$strComplexTypeArray) {
 			if (!array_key_exists('Need', $strComplexTypeArray)) {
 				$strComplexTypeArray['Need'] = Need::GetSoapComplexTypeXml();
+				UnitGenre::AlterSoapComplexTypeArray($strComplexTypeArray);
 				CharityPartner::AlterSoapComplexTypeArray($strComplexTypeArray);
 			}
 		}
@@ -1441,8 +1502,9 @@
 				$objToReturn->strDescription = $objSoapObject->Description;
 			if (property_exists($objSoapObject, 'QuantityRequested'))
 				$objToReturn->intQuantityRequested = $objSoapObject->QuantityRequested;
-			if (property_exists($objSoapObject, 'UnitTypeId'))
-				$objToReturn->intUnitTypeId = $objSoapObject->UnitTypeId;
+			if ((property_exists($objSoapObject, 'UnitGenre')) &&
+				($objSoapObject->UnitGenre))
+				$objToReturn->UnitGenre = UnitGenre::GetObjectFromSoapObject($objSoapObject->UnitGenre);
 			if (property_exists($objSoapObject, 'Size'))
 				$objToReturn->intSize = $objSoapObject->Size;
 			if (property_exists($objSoapObject, 'DateRequested'))
@@ -1470,6 +1532,10 @@
 		}
 
 		public static function GetSoapObjectFromObject($objObject, $blnBindRelatedObjects) {
+			if ($objObject->objUnitGenre)
+				$objObject->objUnitGenre = UnitGenre::GetSoapObjectFromObject($objObject->objUnitGenre, false);
+			else if (!$blnBindRelatedObjects)
+				$objObject->intUnitGenreId = null;
 			if ($objObject->dttDateRequested)
 				$objObject->dttDateRequested = $objObject->dttDateRequested->__toString(QDateTime::FormatSoap);
 			if ($objObject->objCharity)
@@ -1494,7 +1560,8 @@
 	 * @property-read QQNode $Id
 	 * @property-read QQNode $Description
 	 * @property-read QQNode $QuantityRequested
-	 * @property-read QQNode $UnitTypeId
+	 * @property-read QQNode $UnitGenreId
+	 * @property-read QQNodeUnitGenre $UnitGenre
 	 * @property-read QQNode $Size
 	 * @property-read QQNode $DateRequested
 	 * @property-read QQNode $CharityId
@@ -1514,8 +1581,10 @@
 					return new QQNode('description', 'Description', 'string', $this);
 				case 'QuantityRequested':
 					return new QQNode('quantity_requested', 'QuantityRequested', 'integer', $this);
-				case 'UnitTypeId':
-					return new QQNode('unit_type_id', 'UnitTypeId', 'integer', $this);
+				case 'UnitGenreId':
+					return new QQNode('unit_genre_id', 'UnitGenreId', 'integer', $this);
+				case 'UnitGenre':
+					return new QQNodeUnitGenre('unit_genre_id', 'UnitGenre', 'integer', $this);
 				case 'Size':
 					return new QQNode('size', 'Size', 'integer', $this);
 				case 'DateRequested':
@@ -1546,7 +1615,8 @@
 	 * @property-read QQNode $Id
 	 * @property-read QQNode $Description
 	 * @property-read QQNode $QuantityRequested
-	 * @property-read QQNode $UnitTypeId
+	 * @property-read QQNode $UnitGenreId
+	 * @property-read QQNodeUnitGenre $UnitGenre
 	 * @property-read QQNode $Size
 	 * @property-read QQNode $DateRequested
 	 * @property-read QQNode $CharityId
@@ -1567,8 +1637,10 @@
 					return new QQNode('description', 'Description', 'string', $this);
 				case 'QuantityRequested':
 					return new QQNode('quantity_requested', 'QuantityRequested', 'integer', $this);
-				case 'UnitTypeId':
-					return new QQNode('unit_type_id', 'UnitTypeId', 'integer', $this);
+				case 'UnitGenreId':
+					return new QQNode('unit_genre_id', 'UnitGenreId', 'integer', $this);
+				case 'UnitGenre':
+					return new QQNodeUnitGenre('unit_genre_id', 'UnitGenre', 'integer', $this);
 				case 'Size':
 					return new QQNode('size', 'Size', 'integer', $this);
 				case 'DateRequested':

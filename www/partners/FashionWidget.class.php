@@ -28,7 +28,7 @@ class FashionWidget extends QDialogBox {
             $this->strCloseCallback = $strCloseCallback;
                         
             $this->txtName = new QTextBox($this);
-            $this->txtName->Name = 'First Name';
+            $this->txtName->Name = 'Organization Name';
             $this->txtName->Required = true;
             
             $this->txtDescription = new QTextBox($this);

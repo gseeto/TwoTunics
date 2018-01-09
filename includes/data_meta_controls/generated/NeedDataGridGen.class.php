@@ -296,7 +296,8 @@
 				case 'Id': return QQN::Need()->Id;
 				case 'Description': return QQN::Need()->Description;
 				case 'QuantityRequested': return QQN::Need()->QuantityRequested;
-				case 'UnitTypeId': return QQN::Need()->UnitTypeId;
+				case 'UnitGenreId': return QQN::Need()->UnitGenreId;
+				case 'UnitGenre': return QQN::Need()->UnitGenre;
 				case 'Size': return QQN::Need()->Size;
 				case 'DateRequested': return QQN::Need()->DateRequested;
 				case 'CharityId': return QQN::Need()->CharityId;

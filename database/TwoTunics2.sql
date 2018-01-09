@@ -62,7 +62,7 @@ number_of_units INTEGER,
 PRIMARY KEY (id)
 );
 
-CREATE TABLE unit_type
+CREATE TABLE unit_genre
 (
 id INTEGER AUTO_INCREMENT UNIQUE,
 name VARCHAR(255),
@@ -87,7 +87,7 @@ CREATE TABLE donation
 id INTEGER AUTO_INCREMENT UNIQUE,
 description VARCHAR(500),
 quantity_given INTEGER,
-unit_type_id INTEGER,
+unit_genre_id INTEGER,
 size_id INTEGER,
 status INTEGER,
 cost_per_unit INTEGER,
@@ -102,7 +102,7 @@ CREATE TABLE need
 id INTEGER AUTO_INCREMENT UNIQUE,
 description VARCHAR(500),
 quantity_requested INTEGER,
-unit_type_id INTEGER,
+unit_genre_id INTEGER,
 size INTEGER,
 date_requested DATE,
 charity_id INTEGER,
@@ -128,7 +128,7 @@ ALTER TABLE transaction ADD FOREIGN KEY need_id_idxfk (need_id) REFERENCES need 
 
 ALTER TABLE user ADD FOREIGN KEY access_level_idxfk (access_level) REFERENCES access_level(id);
 
-ALTER TABLE donation ADD FOREIGN KEY unit_type_id_idxfk (unit_type_id) REFERENCES unit_type (id);
+ALTER TABLE donation ADD FOREIGN KEY unit_genre_id_idxfk (unit_genre_id) REFERENCES unit_genre (id);
 
 ALTER TABLE donation ADD FOREIGN KEY size_id_idxfk (size_id) REFERENCES size (id);
 
@@ -136,7 +136,7 @@ ALTER TABLE donation ADD FOREIGN KEY status_idxfk (status) REFERENCES donation_s
 
 ALTER TABLE donation ADD FOREIGN KEY fashion_partner_id_idxfk (fashion_partner_id) REFERENCES fashion_partner (id);
 
-ALTER TABLE need ADD FOREIGN KEY unit_type_id_idxfk_1 (unit_type_id) REFERENCES unit_type (id);
+ALTER TABLE need ADD FOREIGN KEY unit_genre_id_idxfk_1 (unit_genre_id) REFERENCES unit_genre (id);
 
 ALTER TABLE need ADD FOREIGN KEY charity_id_idxfk (charity_id) REFERENCES charity_partner (id);
 

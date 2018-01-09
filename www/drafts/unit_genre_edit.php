@@ -4,35 +4,28 @@
 
 	/**
 	 * This is a quick-and-dirty draft QForm object to do Create, Edit, and Delete functionality
-	 * of the Donation class.  It uses the code-generated
-	 * DonationMetaControl class, which has meta-methods to help with
-	 * easily creating/defining controls to modify the fields of a Donation columns.
+	 * of the UnitGenre class.  It uses the code-generated
+	 * UnitGenreMetaControl class, which has meta-methods to help with
+	 * easily creating/defining controls to modify the fields of a UnitGenre columns.
 	 *
 	 * Any display customizations and presentation-tier logic can be implemented
 	 * here by overriding existing or implementing new methods, properties and variables.
 	 * 
 	 * NOTE: This file is overwritten on any code regenerations.  If you want to make
-	 * permanent changes, it is STRONGLY RECOMMENDED to move both donation_edit.php AND
-	 * donation_edit.tpl.php out of this Form Drafts directory.
+	 * permanent changes, it is STRONGLY RECOMMENDED to move both unit_genre_edit.php AND
+	 * unit_genre_edit.tpl.php out of this Form Drafts directory.
 	 *
 	 * @package My Application
 	 * @subpackage Drafts
 	 */
-	class DonationEditForm extends QForm {
-		// Local instance of the DonationMetaControl
-		protected $mctDonation;
+	class UnitGenreEditForm extends QForm {
+		// Local instance of the UnitGenreMetaControl
+		protected $mctUnitGenre;
 
-		// Controls for Donation's Data Fields
+		// Controls for UnitGenre's Data Fields
 		protected $lblId;
-		protected $txtDescription;
-		protected $txtQuantityGiven;
-		protected $lstUnitGenre;
-		protected $lstSize;
-		protected $lstStatusObject;
-		protected $txtCostPerUnit;
-		protected $lstFashionPartner;
-		protected $calDateDonated;
-		protected $txtQuantityRemaining;
+		protected $txtName;
+		protected $txtCategory;
 
 		// Other ListBoxes (if applicable) via Unique ReverseReferences and ManyToMany References
 
@@ -54,21 +47,14 @@
 		}
 
 		protected function Form_Create() {
-			// Use the CreateFromPathInfo shortcut (this can also be done manually using the DonationMetaControl constructor)
+			// Use the CreateFromPathInfo shortcut (this can also be done manually using the UnitGenreMetaControl constructor)
 			// MAKE SURE we specify "$this" as the MetaControl's (and thus all subsequent controls') parent
-			$this->mctDonation = DonationMetaControl::CreateFromPathInfo($this);
+			$this->mctUnitGenre = UnitGenreMetaControl::CreateFromPathInfo($this);
 
-			// Call MetaControl's methods to create qcontrols based on Donation's data fields
-			$this->lblId = $this->mctDonation->lblId_Create();
-			$this->txtDescription = $this->mctDonation->txtDescription_Create();
-			$this->txtQuantityGiven = $this->mctDonation->txtQuantityGiven_Create();
-			$this->lstUnitGenre = $this->mctDonation->lstUnitGenre_Create();
-			$this->lstSize = $this->mctDonation->lstSize_Create();
-			$this->lstStatusObject = $this->mctDonation->lstStatusObject_Create();
-			$this->txtCostPerUnit = $this->mctDonation->txtCostPerUnit_Create();
-			$this->lstFashionPartner = $this->mctDonation->lstFashionPartner_Create();
-			$this->calDateDonated = $this->mctDonation->calDateDonated_Create();
-			$this->txtQuantityRemaining = $this->mctDonation->txtQuantityRemaining_Create();
+			// Call MetaControl's methods to create qcontrols based on UnitGenre's data fields
+			$this->lblId = $this->mctUnitGenre->lblId_Create();
+			$this->txtName = $this->mctUnitGenre->txtName_Create();
+			$this->txtCategory = $this->mctUnitGenre->txtCategory_Create();
 
 			// Create Buttons and Actions on this Form
 			$this->btnSave = new QButton($this);
@@ -82,9 +68,9 @@
 
 			$this->btnDelete = new QButton($this);
 			$this->btnDelete->Text = QApplication::Translate('Delete');
-			$this->btnDelete->AddAction(new QClickEvent(), new QConfirmAction(QApplication::Translate('Are you SURE you want to DELETE this') . ' ' . QApplication::Translate('Donation') . '?'));
+			$this->btnDelete->AddAction(new QClickEvent(), new QConfirmAction(QApplication::Translate('Are you SURE you want to DELETE this') . ' ' . QApplication::Translate('UnitGenre') . '?'));
 			$this->btnDelete->AddAction(new QClickEvent(), new QAjaxAction('btnDelete_Click'));
-			$this->btnDelete->Visible = $this->mctDonation->EditMode;
+			$this->btnDelete->Visible = $this->mctUnitGenre->EditMode;
 		}
 
 		/**
@@ -116,14 +102,14 @@
 		// Button Event Handlers
 
 		protected function btnSave_Click($strFormId, $strControlId, $strParameter) {
-			// Delegate "Save" processing to the DonationMetaControl
-			$this->mctDonation->SaveDonation();
+			// Delegate "Save" processing to the UnitGenreMetaControl
+			$this->mctUnitGenre->SaveUnitGenre();
 			$this->RedirectToListPage();
 		}
 
 		protected function btnDelete_Click($strFormId, $strControlId, $strParameter) {
-			// Delegate "Delete" processing to the DonationMetaControl
-			$this->mctDonation->DeleteDonation();
+			// Delegate "Delete" processing to the UnitGenreMetaControl
+			$this->mctUnitGenre->DeleteUnitGenre();
 			$this->RedirectToListPage();
 		}
 
@@ -134,11 +120,11 @@
 		// Other Methods
 		
 		protected function RedirectToListPage() {
-			QApplication::Redirect(__VIRTUAL_DIRECTORY__ . __FORM_DRAFTS__ . '/donation_list.php');
+			QApplication::Redirect(__VIRTUAL_DIRECTORY__ . __FORM_DRAFTS__ . '/unit_genre_list.php');
 		}
 	}
 
 	// Go ahead and run this form object to render the page and its event handlers, implicitly using
-	// donation_edit.tpl.php as the included HTML template file
-	DonationEditForm::Run('DonationEditForm');
+	// unit_genre_edit.tpl.php as the included HTML template file
+	UnitGenreEditForm::Run('UnitGenreEditForm');
 ?>

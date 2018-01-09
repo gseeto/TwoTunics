@@ -26,7 +26,7 @@
 		protected $lblId;
 		protected $txtDescription;
 		protected $txtQuantityRequested;
-		protected $lstUnitType;
+		protected $lstUnitGenre;
 		protected $txtSize;
 		protected $calDateRequested;
 		protected $lstCharity;
@@ -60,7 +60,7 @@
 			$this->lblId = $this->mctNeed->lblId_Create();
 			$this->txtDescription = $this->mctNeed->txtDescription_Create();
 			$this->txtQuantityRequested = $this->mctNeed->txtQuantityRequested_Create();
-			$this->lstUnitType = $this->mctNeed->lstUnitType_Create();
+			$this->lstUnitGenre = $this->mctNeed->lstUnitGenre_Create();
 			$this->txtSize = $this->mctNeed->txtSize_Create();
 			$this->calDateRequested = $this->mctNeed->calDateRequested_Create();
 			$this->lstCharity = $this->mctNeed->lstCharity_Create();

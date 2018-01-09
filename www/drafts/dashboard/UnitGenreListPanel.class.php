@@ -1,13 +1,13 @@
 <?php
 	/**
 	 * This is the abstract Panel class for the List All functionality
-	 * of the Donation class.  This code-generated class
+	 * of the UnitGenre class.  This code-generated class
 	 * contains a datagrid to display an HTML page that can
-	 * list a collection of Donation objects.  It includes
+	 * list a collection of UnitGenre objects.  It includes
 	 * functionality to perform pagination and sorting on columns.
 	 *
 	 * To take advantage of some (or all) of these control objects, you
-	 * must create a new QPanel which extends this DonationListPanelBase
+	 * must create a new QPanel which extends this UnitGenreListPanelBase
 	 * class.
 	 *
 	 * Any and all changes to this file will be overwritten with any subsequent re-
@@ -17,9 +17,9 @@
 	 * @subpackage Drafts
 	 * 
 	 */
-	class DonationListPanel extends QPanel {
-		// Local instance of the Meta DataGrid to list Donations
-		public $dtgDonations;
+	class UnitGenreListPanel extends QPanel {
+		// Local instance of the Meta DataGrid to list UnitGenres
+		public $dtgUnitGenres;
 
 		// Other public QControls in this panel
 		public $btnCreateNew;
@@ -43,55 +43,48 @@
 			$this->strCloseEditPanelMethod = $strCloseEditPanelMethod;
 
 			// Setup the Template
-			$this->Template = 'DonationListPanel.tpl.php';
+			$this->Template = 'UnitGenreListPanel.tpl.php';
 
 			// Instantiate the Meta DataGrid
-			$this->dtgDonations = new DonationDataGrid($this);
+			$this->dtgUnitGenres = new UnitGenreDataGrid($this);
 
 			// Style the DataGrid (if desired)
-			$this->dtgDonations->CssClass = 'datagrid';
-			$this->dtgDonations->AlternateRowStyle->CssClass = 'alternate';
+			$this->dtgUnitGenres->CssClass = 'datagrid';
+			$this->dtgUnitGenres->AlternateRowStyle->CssClass = 'alternate';
 
 			// Add Pagination (if desired)
-			$this->dtgDonations->Paginator = new QPaginator($this->dtgDonations);
-			$this->dtgDonations->ItemsPerPage = 8;
+			$this->dtgUnitGenres->Paginator = new QPaginator($this->dtgUnitGenres);
+			$this->dtgUnitGenres->ItemsPerPage = 8;
 
 			// Use the MetaDataGrid functionality to add Columns for this datagrid
 
 			// Create an Edit Column
 			$this->pxyEdit = new QControlProxy($this);
 			$this->pxyEdit->AddAction(new QClickEvent(), new QAjaxControlAction($this, 'pxyEdit_Click'));
-			$this->dtgDonations->MetaAddEditProxyColumn($this->pxyEdit, 'Edit', 'Edit');
+			$this->dtgUnitGenres->MetaAddEditProxyColumn($this->pxyEdit, 'Edit', 'Edit');
 
-			// Create the Other Columns (note that you can use strings for donation's properties, or you
-			// can traverse down QQN::donation() to display fields that are down the hierarchy)
-			$this->dtgDonations->MetaAddColumn('Id');
-			$this->dtgDonations->MetaAddColumn('Description');
-			$this->dtgDonations->MetaAddColumn('QuantityGiven');
-			$this->dtgDonations->MetaAddColumn(QQN::Donation()->UnitGenre);
-			$this->dtgDonations->MetaAddColumn(QQN::Donation()->Size);
-			$this->dtgDonations->MetaAddColumn(QQN::Donation()->StatusObject);
-			$this->dtgDonations->MetaAddColumn('CostPerUnit');
-			$this->dtgDonations->MetaAddColumn(QQN::Donation()->FashionPartner);
-			$this->dtgDonations->MetaAddColumn('DateDonated');
-			$this->dtgDonations->MetaAddColumn('QuantityRemaining');
+			// Create the Other Columns (note that you can use strings for unit_genre's properties, or you
+			// can traverse down QQN::unit_genre() to display fields that are down the hierarchy)
+			$this->dtgUnitGenres->MetaAddColumn('Id');
+			$this->dtgUnitGenres->MetaAddColumn('Name');
+			$this->dtgUnitGenres->MetaAddColumn('Category');
 
 			// Setup the Create New button
 			$this->btnCreateNew = new QButton($this);
-			$this->btnCreateNew->Text = QApplication::Translate('Create a New') . ' ' . QApplication::Translate('Donation');
+			$this->btnCreateNew->Text = QApplication::Translate('Create a New') . ' ' . QApplication::Translate('UnitGenre');
 			$this->btnCreateNew->AddAction(new QClickEvent(), new QAjaxControlAction($this, 'btnCreateNew_Click'));
 		}
 
 		public function pxyEdit_Click($strFormId, $strControlId, $strParameter) {
 			$strParameterArray = explode(',', $strParameter);
-			$objEditPanel = new DonationEditPanel($this, $this->strCloseEditPanelMethod, $strParameterArray[0]);
+			$objEditPanel = new UnitGenreEditPanel($this, $this->strCloseEditPanelMethod, $strParameterArray[0]);
 
 			$strMethodName = $this->strSetEditPanelMethod;
 			$this->objForm->$strMethodName($objEditPanel);
 		}
 
 		public function btnCreateNew_Click($strFormId, $strControlId, $strParameter) {
-			$objEditPanel = new DonationEditPanel($this, $this->strCloseEditPanelMethod, null);
+			$objEditPanel = new UnitGenreEditPanel($this, $this->strCloseEditPanelMethod, null);
 			$strMethodName = $this->strSetEditPanelMethod;
 			$this->objForm->$strMethodName($objEditPanel);
 		}

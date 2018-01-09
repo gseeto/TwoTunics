@@ -55,6 +55,13 @@
 		QApplicationBase::$ClassFile['transactionmetacontrol'] = __DATA_META_CONTROLS__ . '/TransactionMetaControl.class.php';
 		QApplicationBase::$ClassFile['transactiondatagrid'] = __DATA_META_CONTROLS__ . '/TransactionDataGrid.class.php';
 
+	// ClassPaths for the UnitGenre class
+		QApplicationBase::$ClassFile['unitgenre'] = __DATA_CLASSES__ . '/UnitGenre.class.php';
+		QApplicationBase::$ClassFile['qqnodeunitgenre'] = __DATA_CLASSES__ . '/UnitGenre.class.php';
+		QApplicationBase::$ClassFile['qqreversereferencenodeunitgenre'] = __DATA_CLASSES__ . '/UnitGenre.class.php';
+		QApplicationBase::$ClassFile['unitgenremetacontrol'] = __DATA_META_CONTROLS__ . '/UnitGenreMetaControl.class.php';
+		QApplicationBase::$ClassFile['unitgenredatagrid'] = __DATA_META_CONTROLS__ . '/UnitGenreDataGrid.class.php';
+
 	// ClassPaths for the User class
 		QApplicationBase::$ClassFile['user'] = __DATA_CLASSES__ . '/User.class.php';
 		QApplicationBase::$ClassFile['qqnodeuser'] = __DATA_CLASSES__ . '/User.class.php';

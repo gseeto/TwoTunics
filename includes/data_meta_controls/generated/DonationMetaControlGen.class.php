@@ -22,8 +22,8 @@
 	 * property-read QLabel $DescriptionLabel
 	 * property QIntegerTextBox $QuantityGivenControl
 	 * property-read QLabel $QuantityGivenLabel
-	 * property QListBox $UnitTypeIdControl
-	 * property-read QLabel $UnitTypeIdLabel
+	 * property QListBox $UnitGenreIdControl
+	 * property-read QLabel $UnitGenreIdLabel
 	 * property QListBox $SizeIdControl
 	 * property-read QLabel $SizeIdLabel
 	 * property QListBox $StatusControl
@@ -86,10 +86,10 @@
 		protected $txtQuantityGiven;
 
         /**
-         * @var QListBox lstUnitType;
+         * @var QListBox lstUnitGenre;
          * @access protected
          */
-		protected $lstUnitType;
+		protected $lstUnitGenre;
 
         /**
          * @var QListBox lstSize;
@@ -142,10 +142,10 @@
 		protected $lblQuantityGiven;
 
         /**
-         * @var QLabel lblUnitTypeId
+         * @var QLabel lblUnitGenreId
          * @access protected
          */
-		protected $lblUnitTypeId;
+		protected $lblUnitGenreId;
 
         /**
          * @var QLabel lblSizeId
@@ -348,29 +348,43 @@
 		}
 
 		/**
-		 * Create and setup QListBox lstUnitType
+		 * Create and setup QListBox lstUnitGenre
 		 * @param string $strControlId optional ControlId to use
+		 * @param QQCondition $objConditions override the default condition of QQ::All() to the query, itself
+		 * @param QQClause[] $objOptionalClauses additional optional QQClause object or array of QQClause objects for the query
 		 * @return QListBox
 		 */
-		public function lstUnitType_Create($strControlId = null) {
-			$this->lstUnitType = new QListBox($this->objParentObject, $strControlId);
-			$this->lstUnitType->Name = QApplication::Translate('Unit Type');
-			$this->lstUnitType->AddItem(QApplication::Translate('- Select One -'), null);
+		public function lstUnitGenre_Create($strControlId = null, QQCondition $objCondition = null, $objOptionalClauses = null) {
+			$this->lstUnitGenre = new QListBox($this->objParentObject, $strControlId);
+			$this->lstUnitGenre->Name = QApplication::Translate('Unit Genre');
+			$this->lstUnitGenre->AddItem(QApplication::Translate('- Select One -'), null);
 
-			$this->lstUnitType->AddItems(UnitType::$NameArray, $this->objDonation->UnitTypeId);
-			return $this->lstUnitType;
+			// Setup and perform the Query
+			if (is_null($objCondition)) $objCondition = QQ::All();
+			$objUnitGenreCursor = UnitGenre::QueryCursor($objCondition, $objOptionalClauses);
+
+			// Iterate through the Cursor
+			while ($objUnitGenre = UnitGenre::InstantiateCursor($objUnitGenreCursor)) {
+				$objListItem = new QListItem($objUnitGenre->__toString(), $objUnitGenre->Id);
+				if (($this->objDonation->UnitGenre) && ($this->objDonation->UnitGenre->Id == $objUnitGenre->Id))
+					$objListItem->Selected = true;
+				$this->lstUnitGenre->AddItem($objListItem);
+			}
+
+			// Return the QListBox
+			return $this->lstUnitGenre;
 		}
 
 		/**
-		 * Create and setup QLabel lblUnitTypeId
+		 * Create and setup QLabel lblUnitGenreId
 		 * @param string $strControlId optional ControlId to use
 		 * @return QLabel
 		 */
-		public function lblUnitTypeId_Create($strControlId = null) {
-			$this->lblUnitTypeId = new QLabel($this->objParentObject, $strControlId);
-			$this->lblUnitTypeId->Name = QApplication::Translate('Unit Type');
-			$this->lblUnitTypeId->Text = ($this->objDonation->UnitTypeId) ? UnitType::$NameArray[$this->objDonation->UnitTypeId] : null;
-			return $this->lblUnitTypeId;
+		public function lblUnitGenreId_Create($strControlId = null) {
+			$this->lblUnitGenreId = new QLabel($this->objParentObject, $strControlId);
+			$this->lblUnitGenreId->Name = QApplication::Translate('Unit Genre');
+			$this->lblUnitGenreId->Text = ($this->objDonation->UnitGenre) ? $this->objDonation->UnitGenre->__toString() : null;
+			return $this->lblUnitGenreId;
 		}
 
 		/**
@@ -593,8 +607,18 @@
 			if ($this->txtQuantityGiven) $this->txtQuantityGiven->Text = $this->objDonation->QuantityGiven;
 			if ($this->lblQuantityGiven) $this->lblQuantityGiven->Text = $this->objDonation->QuantityGiven;
 
-			if ($this->lstUnitType) $this->lstUnitType->SelectedValue = $this->objDonation->UnitTypeId;
-			if ($this->lblUnitTypeId) $this->lblUnitTypeId->Text = ($this->objDonation->UnitTypeId) ? UnitType::$NameArray[$this->objDonation->UnitTypeId] : null;
+			if ($this->lstUnitGenre) {
+					$this->lstUnitGenre->RemoveAllItems();
+				$this->lstUnitGenre->AddItem(QApplication::Translate('- Select One -'), null);
+				$objUnitGenreArray = UnitGenre::LoadAll();
+				if ($objUnitGenreArray) foreach ($objUnitGenreArray as $objUnitGenre) {
+					$objListItem = new QListItem($objUnitGenre->__toString(), $objUnitGenre->Id);
+					if (($this->objDonation->UnitGenre) && ($this->objDonation->UnitGenre->Id == $objUnitGenre->Id))
+						$objListItem->Selected = true;
+					$this->lstUnitGenre->AddItem($objListItem);
+				}
+			}
+			if ($this->lblUnitGenreId) $this->lblUnitGenreId->Text = ($this->objDonation->UnitGenre) ? $this->objDonation->UnitGenre->__toString() : null;
 
 			if ($this->lstSize) {
 					$this->lstSize->RemoveAllItems();
@@ -669,7 +693,7 @@
 				// Update any fields for controls that have been created
 				if ($this->txtDescription) $this->objDonation->Description = $this->txtDescription->Text;
 				if ($this->txtQuantityGiven) $this->objDonation->QuantityGiven = $this->txtQuantityGiven->Text;
-				if ($this->lstUnitType) $this->objDonation->UnitTypeId = $this->lstUnitType->SelectedValue;
+				if ($this->lstUnitGenre) $this->objDonation->UnitGenreId = $this->lstUnitGenre->SelectedValue;
 				if ($this->lstSize) $this->objDonation->SizeId = $this->lstSize->SelectedValue;
 				if ($this->lstStatusObject) $this->objDonation->Status = $this->lstStatusObject->SelectedValue;
 				if ($this->txtCostPerUnit) $this->objDonation->CostPerUnit = $this->txtCostPerUnit->Text;
@@ -736,12 +760,12 @@
 				case 'QuantityGivenLabel':
 					if (!$this->lblQuantityGiven) return $this->lblQuantityGiven_Create();
 					return $this->lblQuantityGiven;
-				case 'UnitTypeIdControl':
-					if (!$this->lstUnitType) return $this->lstUnitType_Create();
-					return $this->lstUnitType;
-				case 'UnitTypeIdLabel':
-					if (!$this->lblUnitTypeId) return $this->lblUnitTypeId_Create();
-					return $this->lblUnitTypeId;
+				case 'UnitGenreIdControl':
+					if (!$this->lstUnitGenre) return $this->lstUnitGenre_Create();
+					return $this->lstUnitGenre;
+				case 'UnitGenreIdLabel':
+					if (!$this->lblUnitGenreId) return $this->lblUnitGenreId_Create();
+					return $this->lblUnitGenreId;
 				case 'SizeIdControl':
 					if (!$this->lstSize) return $this->lstSize_Create();
 					return $this->lstSize;
@@ -806,8 +830,8 @@
 						return ($this->txtDescription = QType::Cast($mixValue, 'QControl'));
 					case 'QuantityGivenControl':
 						return ($this->txtQuantityGiven = QType::Cast($mixValue, 'QControl'));
-					case 'UnitTypeIdControl':
-						return ($this->lstUnitType = QType::Cast($mixValue, 'QControl'));
+					case 'UnitGenreIdControl':
+						return ($this->lstUnitGenre = QType::Cast($mixValue, 'QControl'));
 					case 'SizeIdControl':
 						return ($this->lstSize = QType::Cast($mixValue, 'QControl'));
 					case 'StatusControl':

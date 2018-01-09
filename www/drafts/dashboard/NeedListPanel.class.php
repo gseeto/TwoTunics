@@ -68,7 +68,7 @@
 			$this->dtgNeeds->MetaAddColumn('Id');
 			$this->dtgNeeds->MetaAddColumn('Description');
 			$this->dtgNeeds->MetaAddColumn('QuantityRequested');
-			$this->dtgNeeds->MetaAddTypeColumn('UnitTypeId', 'UnitType');
+			$this->dtgNeeds->MetaAddColumn(QQN::Need()->UnitGenre);
 			$this->dtgNeeds->MetaAddColumn('Size');
 			$this->dtgNeeds->MetaAddColumn('DateRequested');
 			$this->dtgNeeds->MetaAddColumn(QQN::Need()->Charity);
