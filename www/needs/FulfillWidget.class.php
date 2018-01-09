@@ -101,7 +101,7 @@ class FulfillWidget extends QDialogBox {
    			$this->lstDonations->RemoveAllItems();
    			$unitGenreId = $objNeed->UnitGenreId;
    			$sizeId = $objNeed->Size;
-   			$objConditions = QQ::AndCondition(QQ::Equal(QQN::Donation()->SizeId, $sizeId), QQ::Equal(QQN::Donation()->UnitGenreId, $unitGenreId) );
+   			$objConditions = QQ::AndCondition(QQ::Equal(QQN::Donation()->SizeId, $sizeId), QQ::Equal(QQN::Donation()->UnitGenreId, $unitGenreId), QQ::GreaterThan(QQN::Donation()->QuantityRemaining, 0) );
    			$objClauses = array();
    			$objArrayDonations = Donation::QueryArray($objConditions,$objClauses);
    			if($objArrayDonations == null) {
