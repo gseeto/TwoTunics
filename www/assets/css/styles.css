@@ -1,12 +1,5 @@
 	/* These are all EXAMPLES -- they are meant to be updated/changed/modified */
-	body { font: 12px 'Verdana', 'Arial', 'Helvetica'; }
-
-	.container {
-    width:1000px;
-    margin-right:auto;
-    margin-left:auto;
-    background-color:#fff;
- 	}
+	body { font: 16px 'Europa'; }
 
 	/* Standard HTML Form Controls */
 /*	input.button { border: 1px solid #aaf; font: 11px 'Arial', 'Helvetica'; font-weight: bold; background-color: #eef;}
@@ -209,3 +202,80 @@
 		width:1000px;
 		margin: 0px auto;
 	}
+	
+	/* Two Tunics Styling */
+	.container {
+		width:1000px;
+	    margin-right:auto;
+	    margin-left:auto;
+	    background-color:#fff;
+		font-family: 'Europa';
+		font-weight: 300;
+		font-size: 16px;
+    	letter-spacing: 0.5px;
+    	font-style: normal;
+    	color: #1f1f1f;
+    	line-height: 1.6em;
+	}
+	
+	a:link {
+    color: #878787;
+	}
+	
+	h1 {
+        font-family: 'Futura PT';
+    	font-weight: 300;
+    	font-size: 42px;
+    	letter-spacing: 0px;
+    	font-style: normal;
+    	color: #1f1f1f;
+    	line-height: 1.2em;
+	}
+
+h2 {
+    font-family: 'Futura PT';
+    font-weight: 300;
+    font-size: 32px;
+    letter-spacing: 0px;
+    font-style: normal;
+    color: #1f1f1f;
+    line-height: 1.2em
+	}
+
+h3 {
+    font-family: 'Futura PT';
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0px;
+    font-style: normal;
+    color: #1f1f1f;
+    line-height: 1.3em
+	}
+	
+.navbar-nav.li.a:link {
+	font-family: 'Futura PT';
+	font-weight: 500;
+	font-size: 13px;
+	letter-spacing: 2px;
+	font-style: normal;
+	color: #ffffff;
+	text-transform: uppercase;
+	}
+
+.navbar-nav.li.a:active {
+	font-family: 'Futura PT';
+	font-weight: 500;
+	font-size: 13px;
+	letter-spacing: 2px;
+	font-style: normal;
+	color: #9c9897;
+	text-transform: uppercase;
+	}
+.btn-primary { background-color: #9c9897; color:#ffffff; border-color:#9c9897;}
+.btn-primary:hover { color: #9c9897; background-color: #ffffff; border-color:#9c9897;}
+.btn-primary:active,.btn-primary.active,
+.open > .dropdown-toggle.btn-primary { background-color: #9c9897; color:#ffffff; border-color:#9c9897;}
+.btn-primary:visited { background-color: #9c9897; color:#ffffff; border-color:#9c9897;}
+.btn-primary:link { background-color: #9c9897; color:#ffffff; border-color:#9c9897;}
+.btn-primary:focus,
+.btn-primary.focus {background-color: #9c9897; color:#ffffff; border-color:#9c9897;}
