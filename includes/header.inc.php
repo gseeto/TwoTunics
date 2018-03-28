@@ -18,8 +18,10 @@
 <?php $this->RenderBegin(); ?>
 		
 <?php if (QApplication::$User != null) { ?>
-	<img class="logo" src="<?php _p(__VIRTUAL_DIRECTORY__ . __IMAGE_ASSETS__); ?>/Two-Tunics_logo.png" style="display: block; margin: 10px auto; width:150px;" />
-	
+	<div id="banner">
+	<img src="<?php _p(__VIRTUAL_DIRECTORY__ . __IMAGE_ASSETS__); ?>/Two-Tunics_logo_white.png" style="display:block; padding-left: 20px; padding-top: 20px; width:150px;" />
+	<h1 style="text-align: center; color:white;">PORTAL</h1>
+	</div>
 	<!--  Display Navigation Menu based on User Role -->
 	<?php 
 	$role = QApplication::$User->AccessLevel;
