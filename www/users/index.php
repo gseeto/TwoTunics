@@ -30,7 +30,11 @@ class UsersForm extends TwoTunicsForm {
 		
 		// Define the Create User Dialog. passing in the Method Callback for whenever the Create User Dialog is Closed
         $this->dlgUserWidget = new UserWidget('btnCreateUser_Close', $this);
-        $this->dlgUserWidget->Visible = false;
+        //$this->dlgUserWidget->Position = QPosition::Absolute;
+        //$this->dlgUserWidget->Top = 450;
+        //$this->dlgUserWidget->Left = 150;   
+        //$this->dlgUserWidget->AddControlToMove($this->dlgUserWidget);    
+        $this->dlgUserWidget->Visible = false;       
 
         // Setup the Create User Button
         $this->btnCreateUser = new QButton($this);
