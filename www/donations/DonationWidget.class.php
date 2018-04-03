@@ -8,6 +8,10 @@ class DonationWidget extends QDialogBox {
 	public $lstSize;
 	public $btnSubmit;
 	public $btnCancel;
+	public $txtQuantityWarning;
+	public $txtCostPerUnitWarning;
+	public $txtTypeWarning;
+	public $txtSizeWarning;
 	
 	// Object Variables
     protected $strCloseCallback;  
@@ -27,6 +31,18 @@ class DonationWidget extends QDialogBox {
             $this->txtDescription = new QTextBox($this);
             $this->txtDescription->Name = 'Description';
             $this->txtDescription->Required = true;
+            
+            $this->txtQuantityWarning  = new QLabel($this);
+            $this->txtQuantityWarning->Visible = false;
+            
+            $this->txtCostPerUnitWarning  = new QLabel($this);
+            $this->txtCostPerUnitWarning->Visible = false;
+            
+            $this->txtTypeWarning  = new QLabel($this);
+            $this->txtTypeWarning->Visible = false;
+            
+            $this->txtSizeWarning  = new QLabel($this);
+            $this->txtSizeWarning->Visible = false;
             
             $this->txtQuantityGiven = new QTextBox($this);
             $this->txtQuantityGiven->Name = 'Quantity Given';
@@ -73,6 +89,39 @@ class DonationWidget extends QDialogBox {
    }
         
    public function btnSubmit_Click() {
+   // Add some validation at this point.
+   	$bValidated = true;
+   	
+   	// Make sure Quantity Given is an integer
+   	if (!is_numeric($this->txtQuantityGiven->Text) ) {
+ 			$this->txtQuantityWarning->Visible = true;
+ 			$this->txtQuantityWarning->Text = 'Quantity Requested must be a number';
+ 			$bValidated = false; 
+ 	} else $this->txtQuantityWarning->Visible = false;
+ 	
+   // Make sure Cost Per Unit is an integer
+   	if (!is_numeric($this->txtCostPerUnit->Text) ) {
+ 			$this->txtCostPerUnitWarning->Visible = true;
+ 			$this->txtCostPerUnitWarning->Text = 'Cost Per Unit must be a number';
+ 			$bValidated = false; 
+ 	} else $this->txtCostPerUnitWarning->Visible = false;
+ 	
+ 	// Make sure Unit Genre has been selected
+ 	if($this->lstUnitGenre->SelectedValue == null) {
+ 		$this->txtTypeWarning->Visible = true;
+ 		$this->txtTypeWarning->Text = 'You must select a Unit Genre';
+ 		$bValidated = false; 
+ 	} else $this->txtTypeWarning->Visible = false;
+ 	
+   // Make sure Size has been selected
+ 	if($this->lstSize->SelectedValue == null) {
+ 		$this->txtSizeWarning->Visible = true;
+ 		$this->txtSizeWarning->Text = 'You must select a Size';
+ 		$bValidated = false; 
+ 	} else $this->txtSizeWarning->Visible = false;
+
+ 	if($bValidated == false) return; // if Validation fails break off early after displaying message
+ 		
    	// If Create is set then create user, else update.
    	if($this->bCreateDonation){
    		$objDonation = new Donation();

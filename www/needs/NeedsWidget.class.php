@@ -7,6 +7,9 @@ class NeedsWidget extends QDialogBox {
 	public $lstSize;
 	public $btnSubmit;
 	public $btnCancel;
+	public $txtQuantityWarning;
+	public $txtTypeWarning;
+	public $txtSizeWarning;
 	
 	// Object Variables
     protected $strCloseCallback;  
@@ -23,6 +26,15 @@ class NeedsWidget extends QDialogBox {
             parent::__construct($objParentObject, $strControlId);
             $this->strCloseCallback = $strCloseCallback;
 		
+            $this->txtQuantityWarning  = new QLabel($this);
+            $this->txtQuantityWarning->Visible = false;
+            
+            $this->txtTypeWarning  = new QLabel($this);
+            $this->txtTypeWarning->Visible = false;
+            
+            $this->txtSizeWarning  = new QLabel($this);
+            $this->txtSizeWarning->Visible = false;
+            
             $this->txtDescription = new QTextBox($this);
             $this->txtDescription->Name = 'Description';
             $this->txtDescription->Required = true;
@@ -43,7 +55,6 @@ class NeedsWidget extends QDialogBox {
 						
 			$this->btnSubmit = new QButton($this);
 			$this->btnSubmit->Text = 'Submit';
-			$this->btnSubmit->CausesValidation = true;
 			$this->btnSubmit->CssClass = 'btn btn-primary';
 			$this->btnSubmit->AddAction(new QClickEvent(), new QAjaxControlAction($this, 'btnSubmit_Click'));
 			
@@ -63,12 +74,40 @@ class NeedsWidget extends QDialogBox {
      		$this->lstSize->AddItem($objSize->Value, $objSize->Id);
      	}   	
      }
-     
+             
 	public function btnCancel_Click() {
 		$this->HideDialogBox();
    }
         
    public function btnSubmit_Click() {
+   	// Add some validation at this point.
+   	$bValidated = true;
+   	// Make sure Quantity Requested is an integer
+   	if (!is_numeric($this->txtQuantityRequested->Text) ) {
+ 			$this->txtQuantityWarning->Visible = true;
+ 			$this->txtQuantityWarning->Text = 'Quantity Requested must be a number';
+ 			$bValidated = false; 
+ 	}
+ 	// Make sure Unit Genre has been selected
+ 	if($this->lstUnitGenre->SelectedValue == null) {
+ 		$this->txtTypeWarning->Visible = true;
+ 		$this->txtTypeWarning->Text = 'You must select a Unit Genre';
+ 		$bValidated = false; 
+ 	}
+   // Make sure Size has been selected
+ 	if($this->lstSize->SelectedValue == null) {
+ 		$this->txtSizeWarning->Visible = true;
+ 		$this->txtSizeWarning->Text = 'You must select a Size';
+ 		$bValidated = false; 
+ 	}
+
+ 	if($bValidated == false) return; // if Validation fails break off early after displaying message
+ 	else {
+ 		$this->txtQuantityWarning->Visible = false;
+ 		$this->txtTypeWarning->Visible = false;
+ 		$this->txtSizeWarning->Visible = false;
+ 	}
+ 	
    	// If Create is set then create user, else update.
    	if($this->bCreateNeed){
    		$objNeed = new Need();
