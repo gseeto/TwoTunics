@@ -22,7 +22,7 @@ class DonationsForm extends TwoTunicsForm {
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Type', '<?= $_FORM->DonationType_Render($_ITEM) ?>','HtmlEntities=false'));				
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Size', '<?= $_FORM->Size_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Status', '<?= $_FORM->Status_Render($_ITEM) ?>','HtmlEntities=false'));
-		$this->dtgDonations->AddColumn(new QDataGridColumn('Cost Per Unit', '<?= $_ITEM->CostPerUnit ?>', 'HtmlEntities=false' ));
+		$this->dtgDonations->AddColumn(new QDataGridColumn('Cost Per Unit', '<?= $_FORM->CostPerUnit_Render($_ITEM) ?>', 'HtmlEntities=false' ));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Fashion Partner', '<?= $_FORM->Partner_Render($_ITEM) ?>','HtmlEntities=false'));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Date Donated', '<?= $_ITEM->DateDonated ?>', 'HtmlEntities=false' ));
 		$this->dtgDonations->AddColumn(new QDataGridColumn('Edit Donation Details', '<?= $_FORM->EditDonation_Render($_ITEM) ?>', 'HtmlEntities=false'));
@@ -127,6 +127,14 @@ class DonationsForm extends TwoTunicsForm {
     	} else {
     		return 'Administrator Entered';
     	}
+    }
+    
+	public function CostPerUnit_Render(Donation $objDonation) {	
+    	if($objDonation->CostPerUnit) {
+    		return '$'. number_format($objDonation->CostPerUnit,2); 
+    	} else {
+    		return '';
+    	} 	
     }
     
     public function dtgDonations_Bind() {

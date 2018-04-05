@@ -55,6 +55,7 @@
 	    <ul class="nav navbar-nav">
 	      <li id="dashboard" class="active"><a href="<?php _p(__SUBDIRECTORY__);?>/dashboard/index.php">Dashboard</a></li>
 	      <li id="donations"><a href="<?php _p(__SUBDIRECTORY__);?>/donations/index.php">My Donations</a></li>
+	      <li id="transactions"><a href="<?php _p(__SUBDIRECTORY__);?>/transactions/index.php">My Transactions</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/logoff/index.php"><span class="glyphicon glyphicon-log-in"></span> LogOff</a></li>
@@ -76,6 +77,7 @@
 	      <li id="partners"><a href="<?php _p(__SUBDIRECTORY__);?>/partners/index.php">Partners</a></li>
 	      <li id="needs"><a href="<?php _p(__SUBDIRECTORY__);?>/needs/index.php">Needs</a></li>
 	      <li id="donations"><a href="<?php _p(__SUBDIRECTORY__);?>/donations/index.php">Donations</a></li>
+	      <li id="transactions"><a href="<?php _p(__SUBDIRECTORY__);?>/transactions/index.php">Transactions</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><a href="<?php _p(__SUBDIRECTORY__);?>/logoff/index.php"><span class="glyphicon glyphicon-log-in"></span> LogOff</a></li>

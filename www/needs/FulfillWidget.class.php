@@ -76,9 +76,9 @@ class FulfillWidget extends QDialogBox {
    	if($objDonation) {
    		$objDonation->QuantityRemaining = $objDonation->QuantityGiven - $this->txtQuantityRequested->Text;
    		if($objDonation->QuantityRemaining == 0) {
-   			$objDonation->Status = 2; // Accepted
-   			$objDonation->Save();
+   			$objDonation->Status = 2; // Accepted  			
    		}
+   		$objDonation->Save();
    	}
    	// Create Transaction
    	if($objNeed && $objDonation) {

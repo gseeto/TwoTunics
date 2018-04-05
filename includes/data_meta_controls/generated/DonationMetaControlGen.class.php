@@ -28,7 +28,7 @@
 	 * property-read QLabel $SizeIdLabel
 	 * property QListBox $StatusControl
 	 * property-read QLabel $StatusLabel
-	 * property QIntegerTextBox $CostPerUnitControl
+	 * property QFloatTextBox $CostPerUnitControl
 	 * property-read QLabel $CostPerUnitLabel
 	 * property QListBox $FashionPartnerIdControl
 	 * property-read QLabel $FashionPartnerIdLabel
@@ -104,7 +104,7 @@
 		protected $lstStatusObject;
 
         /**
-         * @var QIntegerTextBox txtCostPerUnit;
+         * @var QFloatTextBox txtCostPerUnit;
          * @access protected
          */
 		protected $txtCostPerUnit;
@@ -468,12 +468,12 @@
 		}
 
 		/**
-		 * Create and setup QIntegerTextBox txtCostPerUnit
+		 * Create and setup QFloatTextBox txtCostPerUnit
 		 * @param string $strControlId optional ControlId to use
-		 * @return QIntegerTextBox
+		 * @return QFloatTextBox
 		 */
 		public function txtCostPerUnit_Create($strControlId = null) {
-			$this->txtCostPerUnit = new QIntegerTextBox($this->objParentObject, $strControlId);
+			$this->txtCostPerUnit = new QFloatTextBox($this->objParentObject, $strControlId);
 			$this->txtCostPerUnit->Name = QApplication::Translate('Cost Per Unit');
 			$this->txtCostPerUnit->Text = $this->objDonation->CostPerUnit;
 			return $this->txtCostPerUnit;

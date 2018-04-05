@@ -21,7 +21,7 @@
 	 * @property integer $UnitGenreId the value for intUnitGenreId 
 	 * @property integer $SizeId the value for intSizeId 
 	 * @property integer $Status the value for intStatus 
-	 * @property integer $CostPerUnit the value for intCostPerUnit 
+	 * @property double $CostPerUnit the value for fltCostPerUnit 
 	 * @property integer $FashionPartnerId the value for intFashionPartnerId 
 	 * @property QDateTime $DateDonated the value for dttDateDonated 
 	 * @property integer $QuantityRemaining the value for intQuantityRemaining 
@@ -90,9 +90,9 @@
 
 		/**
 		 * Protected member variable that maps to the database column donation.cost_per_unit
-		 * @var integer intCostPerUnit
+		 * @var double fltCostPerUnit
 		 */
-		protected $intCostPerUnit;
+		protected $fltCostPerUnit;
 		const CostPerUnitDefault = null;
 
 
@@ -594,7 +594,7 @@
 			$strAliasName = array_key_exists($strAliasPrefix . 'status', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'status'] : $strAliasPrefix . 'status';
 			$objToReturn->intStatus = $objDbRow->GetColumn($strAliasName, 'Integer');
 			$strAliasName = array_key_exists($strAliasPrefix . 'cost_per_unit', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'cost_per_unit'] : $strAliasPrefix . 'cost_per_unit';
-			$objToReturn->intCostPerUnit = $objDbRow->GetColumn($strAliasName, 'Integer');
+			$objToReturn->fltCostPerUnit = $objDbRow->GetColumn($strAliasName, 'Float');
 			$strAliasName = array_key_exists($strAliasPrefix . 'fashion_partner_id', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'fashion_partner_id'] : $strAliasPrefix . 'fashion_partner_id';
 			$objToReturn->intFashionPartnerId = $objDbRow->GetColumn($strAliasName, 'Integer');
 			$strAliasName = array_key_exists($strAliasPrefix . 'date_donated', $strColumnAliasArray) ? $strColumnAliasArray[$strAliasPrefix . 'date_donated'] : $strAliasPrefix . 'date_donated';
@@ -916,7 +916,7 @@
 							' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 							' . $objDatabase->SqlVariable($this->intSizeId) . ',
 							' . $objDatabase->SqlVariable($this->intStatus) . ',
-							' . $objDatabase->SqlVariable($this->intCostPerUnit) . ',
+							' . $objDatabase->SqlVariable($this->fltCostPerUnit) . ',
 							' . $objDatabase->SqlVariable($this->intFashionPartnerId) . ',
 							' . $objDatabase->SqlVariable($this->dttDateDonated) . ',
 							' . $objDatabase->SqlVariable($this->intQuantityRemaining) . '
@@ -944,7 +944,7 @@
 							`unit_genre_id` = ' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 							`size_id` = ' . $objDatabase->SqlVariable($this->intSizeId) . ',
 							`status` = ' . $objDatabase->SqlVariable($this->intStatus) . ',
-							`cost_per_unit` = ' . $objDatabase->SqlVariable($this->intCostPerUnit) . ',
+							`cost_per_unit` = ' . $objDatabase->SqlVariable($this->fltCostPerUnit) . ',
 							`fashion_partner_id` = ' . $objDatabase->SqlVariable($this->intFashionPartnerId) . ',
 							`date_donated` = ' . $objDatabase->SqlVariable($this->dttDateDonated) . ',
 							`quantity_remaining` = ' . $objDatabase->SqlVariable($this->intQuantityRemaining) . '
@@ -1037,7 +1037,7 @@
 			$this->UnitGenreId = $objReloaded->UnitGenreId;
 			$this->SizeId = $objReloaded->SizeId;
 			$this->Status = $objReloaded->Status;
-			$this->intCostPerUnit = $objReloaded->intCostPerUnit;
+			$this->fltCostPerUnit = $objReloaded->fltCostPerUnit;
 			$this->FashionPartnerId = $objReloaded->FashionPartnerId;
 			$this->dttDateDonated = $objReloaded->dttDateDonated;
 			$this->intQuantityRemaining = $objReloaded->intQuantityRemaining;
@@ -1073,7 +1073,7 @@
 					' . $objDatabase->SqlVariable($this->intUnitGenreId) . ',
 					' . $objDatabase->SqlVariable($this->intSizeId) . ',
 					' . $objDatabase->SqlVariable($this->intStatus) . ',
-					' . $objDatabase->SqlVariable($this->intCostPerUnit) . ',
+					' . $objDatabase->SqlVariable($this->fltCostPerUnit) . ',
 					' . $objDatabase->SqlVariable($this->intFashionPartnerId) . ',
 					' . $objDatabase->SqlVariable($this->dttDateDonated) . ',
 					' . $objDatabase->SqlVariable($this->intQuantityRemaining) . ',
@@ -1158,9 +1158,9 @@
 					return $this->intStatus;
 
 				case 'CostPerUnit':
-					// Gets the value for intCostPerUnit 
-					// @return integer
-					return $this->intCostPerUnit;
+					// Gets the value for fltCostPerUnit 
+					// @return double
+					return $this->fltCostPerUnit;
 
 				case 'FashionPartnerId':
 					// Gets the value for intFashionPartnerId 
@@ -1333,11 +1333,11 @@
 					}
 
 				case 'CostPerUnit':
-					// Sets the value for intCostPerUnit 
-					// @param integer $mixValue
-					// @return integer
+					// Sets the value for fltCostPerUnit 
+					// @param double $mixValue
+					// @return double
 					try {
-						return ($this->intCostPerUnit = QType::Cast($mixValue, QType::Integer));
+						return ($this->fltCostPerUnit = QType::Cast($mixValue, QType::Float));
 					} catch (QCallerException $objExc) {
 						$objExc->IncrementOffset();
 						throw $objExc;
@@ -1726,7 +1726,7 @@
 			$strToReturn .= '<element name="UnitGenre" type="xsd1:UnitGenre"/>';
 			$strToReturn .= '<element name="Size" type="xsd1:Size"/>';
 			$strToReturn .= '<element name="StatusObject" type="xsd1:DonationStatus"/>';
-			$strToReturn .= '<element name="CostPerUnit" type="xsd:int"/>';
+			$strToReturn .= '<element name="CostPerUnit" type="xsd:float"/>';
 			$strToReturn .= '<element name="FashionPartner" type="xsd1:FashionPartner"/>';
 			$strToReturn .= '<element name="DateDonated" type="xsd:dateTime"/>';
 			$strToReturn .= '<element name="QuantityRemaining" type="xsd:int"/>';
@@ -1772,7 +1772,7 @@
 				($objSoapObject->StatusObject))
 				$objToReturn->StatusObject = DonationStatus::GetObjectFromSoapObject($objSoapObject->StatusObject);
 			if (property_exists($objSoapObject, 'CostPerUnit'))
-				$objToReturn->intCostPerUnit = $objSoapObject->CostPerUnit;
+				$objToReturn->fltCostPerUnit = $objSoapObject->CostPerUnit;
 			if ((property_exists($objSoapObject, 'FashionPartner')) &&
 				($objSoapObject->FashionPartner))
 				$objToReturn->FashionPartner = FashionPartner::GetObjectFromSoapObject($objSoapObject->FashionPartner);
@@ -1872,7 +1872,7 @@
 				case 'StatusObject':
 					return new QQNodeDonationStatus('status', 'StatusObject', 'integer', $this);
 				case 'CostPerUnit':
-					return new QQNode('cost_per_unit', 'CostPerUnit', 'integer', $this);
+					return new QQNode('cost_per_unit', 'CostPerUnit', 'double', $this);
 				case 'FashionPartnerId':
 					return new QQNode('fashion_partner_id', 'FashionPartnerId', 'integer', $this);
 				case 'FashionPartner':
@@ -1940,7 +1940,7 @@
 				case 'StatusObject':
 					return new QQNodeDonationStatus('status', 'StatusObject', 'integer', $this);
 				case 'CostPerUnit':
-					return new QQNode('cost_per_unit', 'CostPerUnit', 'integer', $this);
+					return new QQNode('cost_per_unit', 'CostPerUnit', 'double', $this);
 				case 'FashionPartnerId':
 					return new QQNode('fashion_partner_id', 'FashionPartnerId', 'integer', $this);
 				case 'FashionPartner':
